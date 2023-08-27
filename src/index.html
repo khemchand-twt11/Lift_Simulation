@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <title>Lift Simulator</title>
+  </head>
+  <body>
+    <h1 class="heading">Lift Simulator</h1>
+    <div class="main-container">
+      <form class="form">
+        <div>
+          <label for="floors">Number of Floors: </label>
+          <input
+            type="number"
+            id="floors"
+            name="fname"
+            placeholder="Enter no. of floors."
+          />
+        </div>
+
+        <div>
+          <label for="lifts">Number of Lifts: </label>
+          <input
+            type="number"
+            id="lifts"
+            name="lname"
+            placeholder="Enter no. of lifts"
+          />
+        </div>
+        <div>
+          <input type="submit" value="Submit" class="submit-btn" />
+        </div>
+      </form>
+    </div>
+
+    <div class="lift-simulation-container">
+      <div class="floors-container">
+        <!-- Floor buttons will be dynamically generated here -->
+      </div>
+    </div>
+  </body>
+  <script src="./js/main.js"></script>
+</html>

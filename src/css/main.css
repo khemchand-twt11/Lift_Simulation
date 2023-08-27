@@ -1,0 +1,154 @@
+:root {
+  --animation-distance: -500px; /* Default animation distance */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+.heading {
+  text-align: center;
+}
+
+/* .form {
+  width: 20%;
+} */
+.form div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.form label {
+  font-size: 24px;
+  font-weight: 600;
+}
+.form input {
+  display: block;
+  border: 2px solid gray;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 18px;
+  padding: 5px;
+}
+
+.form .submit-btn {
+  display: inline-block;
+  width: 100%;
+  margin-left: 0px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  background: teal;
+}
+.floors-container {
+  margin-bottom: 50px;
+  /* position: relative; */
+}
+
+.floors-container > div {
+  height: 120px;
+  border-bottom: 2px solid gray;
+  display: flex;
+
+  justify-content: space-between;
+  /* margin-bottom: 50px; */
+}
+.floors-container button {
+  display: block;
+  padding: 4px 8px;
+  margin: 4px;
+  margin-bottom: 8px;
+}
+
+#floor-1 > .floor-label {
+  order: 2;
+}
+
+/* Lift Container */
+.lift {
+  position: relative;
+  width: 100px;
+  height: 120px;
+  box-sizing: border-box;
+  background-image: url('https://media.istockphoto.com/id/636242412/photo/blank-billboard-inside-of-elevator.jpg?s=612x612&w=0&k=20&c=QQyOLbwOcpkwbryRaWrK_0Nt4L0pizJgz93nlvJqQMg=');
+  background-size: cover;
+  border: 2px solid black;
+  background-color: #f2f2f2;
+  display: flex;
+}
+.lift-button {
+  width: 50px;
+  height: 50px;
+  font-size: 28px;
+}
+.left-door,
+.right-door {
+  box-sizing: border-box;
+  height: 100%;
+  background: #c0c0c0;
+  border: 4px solid black;
+  z-index: 1;
+  flex-grow: 1;
+  /* overflow-y: hidden; */
+}
+
+/* Define keyframes as explained in the previous response */
+
+.opening-left-door {
+  animation: openLeftDoor 2.5s forwards;
+}
+
+.closing-left-door {
+  animation: closeLeftDoor 2.5s forwards;
+}
+
+.opening-right-door {
+  animation: openRightDoor 2.5s forwards;
+}
+
+.closing-right-door {
+  animation: closeRightDoor 2.5s forwards;
+}
+
+@keyframes openLeftDoor {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50px);
+  }
+}
+
+@keyframes closeLeftDoor {
+  0% {
+    transform: translateX(-50px);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes openRightDoor {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(50px);
+  }
+}
+
+@keyframes closeRightDoor {
+  0% {
+    transform: translateX(50px);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
