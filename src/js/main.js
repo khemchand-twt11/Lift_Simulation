@@ -2,19 +2,62 @@ const form = document.querySelector('.form')
 const floorsContainer = document.querySelector('.floors-container')
 const mainContainer = document.querySelector('.main-container')
 const lifts = []
-
-// Event listeners on button
+const pendingQueue = []
 
 function addLiftButtonListeners() {
   const liftButtons = document.querySelectorAll('.lift-button')
   liftButtons.forEach((button) => {
-    button.addEventListener('click', function () {
-      const floorElement = this.closest('.floor-content')
-      const floor = parseInt(floorElement.parentNode.id.split('-')[1])
-      const direction = this.classList.contains('up-button') ? 'up' : 'down'
-      console.log(floor, direction)
-    })
+    button.addEventListener('click', handleLiftButtonClick)
   })
+}
+
+function handleLiftButtonClick() {
+  const floorElement = this.closest('.floor-content')
+  const floor = parseInt(floorElement.parentNode.id.split('-')[1])
+
+  const nearestLift = findNearestIdleLift(floor)
+  if (nearestLift) {
+    handleNearestLift(nearestLift, floor)
+  } else {
+    handlePendingQueue(floor)
+  }
+}
+function findNearestIdleLift(floor) {
+  const idleLifts = lifts.filter((lift) => !lift.moving)
+
+  if (idleLifts.length > 0) {
+    const nearestLift = idleLifts.reduce((nearest, lift) => {
+      const distance = Math.abs(floor - lift.currentFloor)
+      if (!nearest || distance < Math.abs(floor - nearest.currentFloor)) {
+        return lift
+      }
+      return nearest
+    }, null)
+
+    return nearestLift
+  }
+
+  return null
+}
+
+function handleNearestLift(lift, floor) {
+  lift.moving = true
+  if (lift.currentFloor === floor) {
+    return openDoors(lift.liftId, floor)
+  }
+  const distanceToFloor = Math.abs(floor - lift.currentFloor)
+  myMove(
+    lift.liftId,
+    distanceToFloor * 122,
+    distanceToFloor * 2.5,
+    floor,
+    floor > lift.currentFloor ? 'up' : 'down'
+  )
+}
+
+function handlePendingQueue(floor) {
+  pendingQueue.push(floor)
+  // console.log(pendingQueue)
 }
 
 //generate floors
@@ -68,13 +111,14 @@ function generateLifts(numLifts) {
     firstFloor.appendChild(liftElement)
 
     lifts.push({
+      liftId: `lift-${lift}`,
       currentFloor: 1,
       moving: false,
       direction: null,
       stops: [],
     })
   }
-  console.log(lifts)
+
   addLiftButtonListeners()
 }
 
@@ -114,12 +158,16 @@ form.addEventListener('submit', function (event) {
 })
 
 //moving lift
-function myMove(elemId, finalPos, totalTime) {
+function myMove(elemId, finalPos, totalTime, floorId, direction) {
   var elem = document.getElementById(elemId)
-  var totalSteps = Math.floor(totalTime * 60)
-  var stepSize = finalPos / totalSteps
+  var initialPos = parseInt(elem.style.bottom) || 0
 
-  var pos = 0
+  var totalSteps = Math.floor(totalTime * 60)
+
+  var stepSize =
+    direction === 'up' ? finalPos / totalSteps : -finalPos / totalSteps
+
+  var pos = initialPos
   var currentStep = 0
 
   var id = setInterval(frame, 16.67)
@@ -127,21 +175,22 @@ function myMove(elemId, finalPos, totalTime) {
   function frame() {
     if (currentStep >= totalSteps) {
       clearInterval(id)
-      setTimeout(() => {
-        openDoors(elemId)
-      }, 1000)
+
+      openDoors(elemId, floorId)
     } else {
       pos += stepSize
       elem.style.bottom = pos + 'px'
+
       currentStep++
     }
   }
 }
 
 //opening doors
-function openDoors(liftId) {
+function openDoors(liftId, floorId) {
   const liftElement = document.getElementById(liftId)
   const leftDoor = liftElement.querySelector('.left-door')
+
   const rightDoor = liftElement.querySelector('.right-door')
 
   leftDoor.classList.add('opening-left-door')
@@ -153,5 +202,35 @@ function openDoors(liftId) {
 
     rightDoor.classList.remove('opening-right-door')
     rightDoor.classList.add('closing-right-door')
+    const lift = lifts.find((lift) => lift.liftId === liftId)
+    lift.moving = false
+    lift.currentFloor = floorId
+    handleIdleLift(lift)
+  }, 2500)
+  leftDoor.classList.remove('closing-left-door')
+  rightDoor.classList.remove('closing-right-door')
+}
+
+function handleIdleLift(lift) {
+  const nextFloor = pendingQueue.shift()
+  console.log(nextFloor)
+  if (!nextFloor) return
+  setTimeout(() => {
+    if (nextFloor) {
+      const direction = nextFloor > lift.currentFloor ? 'up' : 'down'
+      if (lift.currentFloor === nextFloor)
+        return openDoors(lift.liftId, nextFloor)
+
+      if (!lift.moving) {
+        lift.direction = direction
+        myMove(
+          lift.liftId,
+          Math.abs(nextFloor - lift.currentFloor) * 122,
+          Math.abs(nextFloor - lift.currentFloor) * 2.5,
+          nextFloor,
+          nextFloor > lift.currentFloor ? 'up' : 'down'
+        )
+      }
+    }
   }, 2500)
 }
