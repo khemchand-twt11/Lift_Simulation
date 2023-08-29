@@ -22,6 +22,7 @@ function handleLiftButtonClick() {
     handlePendingQueue(floor)
   }
 }
+
 function findNearestIdleLift(floor) {
   const idleLifts = lifts.filter((lift) => !lift.moving)
 
@@ -57,7 +58,6 @@ function handleNearestLift(lift, floor) {
 
 function handlePendingQueue(floor) {
   pendingQueue.push(floor)
-  // console.log(pendingQueue)
 }
 
 //generate floors
@@ -213,15 +213,18 @@ function openDoors(liftId, floorId) {
 
 function handleIdleLift(lift) {
   const nextFloor = pendingQueue.shift()
-  console.log(nextFloor)
   if (!nextFloor) return
   setTimeout(() => {
     if (nextFloor) {
       const direction = nextFloor > lift.currentFloor ? 'up' : 'down'
-      if (lift.currentFloor === nextFloor)
+      if (lift.currentFloor === nextFloor) {
+        console.log('lift:', lift, ' floor: ', nextFloor)
+
         return openDoors(lift.liftId, nextFloor)
+      }
 
       if (!lift.moving) {
+        console.log('lift:', lift, ' floor: ', nextFloor)
         lift.direction = direction
         myMove(
           lift.liftId,
