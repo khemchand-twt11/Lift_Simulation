@@ -31,7 +31,9 @@ To get started with the Elevator Simulation Application, follow these steps:
 
 1. **Clone the Repository:** Clone this repository to your local machine using the following command:
 
-   `git clone https://github.com/khemchand-twt11/Lift_Simulation.git`
+   ```JavaScript
+       git clone https://github.com/khemchand-twt11/Lift_Simulation.git
+   ```
 
 2. **Open the HTML File:** Open the `index.html` file in a web browser to launch the simulation.
 
