@@ -202,13 +202,16 @@ function openDoors(liftId, floorId) {
 
     rightDoor.classList.remove('opening-right-door')
     rightDoor.classList.add('closing-right-door')
-    const lift = lifts.find((lift) => lift.liftId === liftId)
-    lift.moving = false
-    lift.currentFloor = floorId
-    handleIdleLift(lift)
+
+    setTimeout(() => {
+      const lift = lifts.find((lift) => lift.liftId === liftId)
+      lift.moving = false
+      lift.currentFloor = floorId
+      leftDoor.classList.remove('closing-left-door')
+      rightDoor.classList.remove('closing-right-door')
+      handleIdleLift(lift)
+    }, 2500)
   }, 2500)
-  leftDoor.classList.remove('closing-left-door')
-  rightDoor.classList.remove('closing-right-door')
 }
 
 function handleIdleLift(lift) {
