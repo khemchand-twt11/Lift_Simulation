@@ -138,23 +138,7 @@ function findNearestIdleLift(floorNo) {
   }
 }
 
-//Lift moving functionallity
-// function moveLift(floorNo, lift) {
-//   const liftElement = document.getElementById(lift.liftId);
-//   console.log('transform', liftElement.style.transform || 0);
-//   let totalHeight = (floorNo - lift.currentFloor) * 122;
-//   const totalDuration = Math.abs(floorNo - lift.currentFloor) * 2;
-//   console.log(`totalHeight ${totalHeight}, totalDuration ${totalDuration}`);
-//   console.log(`translateY(-${totalHeight}px)`);
-//   lift.moving = true;
-//   liftElement.style.transition = `all ${totalDuration}s`;
-//   liftElement.style.transform = `translateY(-${totalHeight}px)`;
-
-//   setTimeout(() => {
-//     openAndCloseDoors(floorNo, lift);
-//   }, totalDuration * 1000);
-// }
-
+// Lift Functionallity
 function moveLift(floorNo, lift) {
   const liftElement = document.getElementById(lift.liftId);
   const currentFloor = lift.currentFloor;
@@ -162,10 +146,7 @@ function moveLift(floorNo, lift) {
 
   lift.moving = true;
 
-  // Calculate the absolute position of the floor based on floor number
   const absolutePosition = (floorNo - 1) * 122;
-
-  // Calculate the direction (up or down)
 
   liftElement.style.transition = `all ${totalDuration}s`;
   liftElement.style.transform = `translateY(-${absolutePosition}px)`;
