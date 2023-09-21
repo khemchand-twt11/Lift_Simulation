@@ -97,59 +97,13 @@ body {
   border: 4px solid black;
   z-index: 1;
   flex-grow: 1;
-  /* overflow-y: hidden; */
+  transition: all 2.5s ease-in-out;
 }
 
-/* Define keyframes as explained in the previous response */
-
-.opening-left-door {
-  animation: openLeftDoor 2.5s forwards;
+.left-move {
+  transform: translateX(-100%);
 }
 
-.closing-left-door {
-  animation: closeLeftDoor 2.5s forwards;
-}
-
-.opening-right-door {
-  animation: openRightDoor 2.5s forwards;
-}
-
-.closing-right-door {
-  animation: closeRightDoor 2.5s forwards;
-}
-
-@keyframes openLeftDoor {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50px);
-  }
-}
-
-@keyframes closeLeftDoor {
-  0% {
-    transform: translateX(-50px);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes openRightDoor {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(50px);
-  }
-}
-
-@keyframes closeRightDoor {
-  0% {
-    transform: translateX(50px);
-  }
-  100% {
-    transform: translateX(0%);
-  }
+.right-move {
+  transform: translateX(100%);
 }
