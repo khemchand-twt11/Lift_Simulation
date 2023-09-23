@@ -19,14 +19,14 @@ form.addEventListener('submit', function (event) {
     );
     return;
   }
-  if (numFloors > 20) {
-    alert('Maximum number of floors allowed is 20.');
-    return;
-  }
-  if (numLifts > 10) {
-    alert('Maximum number of lifts allowed is 10.');
-    return;
-  }
+  // if (numFloors > 20) {
+  //   alert('Maximum number of floors allowed is 20.');
+  //   return;
+  // }
+  // if (numLifts > 10) {
+  //   alert('Maximum number of lifts allowed is 10.');
+  //   return;
+  // }
   if (numLifts > numFloors) {
     alert(
       'Number of lifts should be less than or equal to the number of floors.'
