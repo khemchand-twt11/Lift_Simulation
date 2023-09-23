@@ -93,6 +93,7 @@ function generateLifts(numLifts) {
       currentFloor: 1,
       moving: false,
       direction: null,
+      stops: [],
     });
   }
 
@@ -111,13 +112,20 @@ function addLiftButtonListeners() {
 function handleLiftButtonClick() {
   const floorElement = this.closest('.floor-content');
   const floorNo = parseInt(floorElement.parentNode.id.split('-')[1]);
-  const requiredLift = findNearestIdleLift(floorNo);
-  // console.log(requiredLift);
-  if (requiredLift) {
-    moveLift(floorNo, requiredLift);
-  } else {
-    pendingQueue.push(floorNo);
-    // console.log(pendingQueue);
+
+  const ifLiftAlreadyHeading = lifts.find((lift) =>
+    lift.stops.includes(floorNo)
+  );
+  // if undefined that means no lift is going to that particulr floor
+  if (!ifLiftAlreadyHeading) {
+    const requiredLift = findNearestIdleLift(floorNo);
+    if (requiredLift) {
+      moveLift(floorNo, requiredLift);
+    } else {
+      if (!pendingQueue.includes(floorNo)) {
+        pendingQueue.push(floorNo);
+      }
+    }
   }
 }
 
@@ -145,11 +153,9 @@ function moveLift(floorNo, lift) {
   const totalDuration = Math.abs(floorNo - currentFloor) * 2;
 
   lift.moving = true;
-
-  const absolutePosition = (floorNo - 1) * 122;
-
+  lift.stops.push(floorNo);
   liftElement.style.transition = `all ${totalDuration}s`;
-  liftElement.style.transform = `translateY(-${absolutePosition}px)`;
+  liftElement.style.transform = `translateY(-${(floorNo - 1) * 122}px)`;
 
   setTimeout(() => {
     openAndCloseDoors(floorNo, lift);
@@ -172,7 +178,10 @@ function openAndCloseDoors(floorNo, lift) {
     setTimeout(() => {
       lift.currentFloor = floorNo;
       lift.moving = false;
-
+      const index = lift.stops.indexOf(floorNo);
+      if (index !== -1) {
+        lift.stops.splice(index, 1);
+      }
       if (pendingQueue.length > 0) {
         let newFloorNo = pendingQueue[0];
         pendingQueue.shift();
